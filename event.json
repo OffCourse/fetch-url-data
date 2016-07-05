@@ -1,0 +1,20 @@
+{
+    "Records": [
+        {
+            "kinesis": {
+                "kinesisSchemaVersion": "1.0",
+                "partitionKey": "url",
+                "sequenceNumber": "49563567057046961355977158921884735042285631406618968066",
+                "data": "eyJ1c2VyIjoieWVlaGFhIiwiaWQiOjc0OTg2NDEzNzQ2MzkxNDUwMCwidXJsIjoiaHR0cDovL3d3dy5ueXRpbWVzLmNvbS8yMDE2LzA3LzA0L3lvdXItbW9uZXkvYXMtc2VsZi1kcml2aW5nLWNhcnMtaGl0LXRoZS1yb2FkLWlubm92YXRpb24taXMtb3V0cGFjaW5nLWluc3VyYW5jZS5odG1sIiwidGltZXN0YW1wIjoiTW9uIEp1bCAwNCAwNzoxNToxNiArMDAwMCAyMDE2In0=",
+                "approximateArrivalTimestamp": 1467751712.323
+            },
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1.0",
+            "eventID": "shardId-000000000000:49563567057046961355977158921884735042285631406618968066",
+            "eventName": "aws:kinesis:record",
+            "invokeIdentityArn": "arn:aws:iam::774182433398:role/lambda_kinesis_role",
+            "awsRegion": "eu-west-1",
+            "eventSourceARN": "arn:aws:kinesis:eu-west-1:774182433398:stream/expanded-links"
+        }
+    ]
+}

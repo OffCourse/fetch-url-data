@@ -1,0 +1,28 @@
+{
+  "name": "fetch-url-data",
+  "version": "0.0.1",
+  "description": "react to kinesis expanded-url events",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/offcourse/fetch-url-data.git"
+  },
+  "author": "yeehaa123",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/offcourse/fetch-url-data/issues"
+  },
+  "homepage": "https://github.com/fetch-url-data/cljs-lambda",
+  "dependencies": {
+    "expand-url": "^0.1.3",
+    "node-lambda": "^0.8.6",
+    "node-url-expand": "^1.0.0",
+    "request": "^2.72.0",
+    "unshortener": "^0.1.0"
+  },
+  "scripts": {
+    "start": "./node_modules/node-lambda/bin/node-lambda run",
+    "deploy": "./node_modules/node-lambda/bin/node-lambda deploy -e development -f development.env",
+    "deploy-prod": "./node_modules/node-lambda/bin/node-lambda deploy -e production -f production.env"
+  }
+}
