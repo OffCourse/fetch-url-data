@@ -1,0 +1,30 @@
+(ns app.specs
+  (:require [cljs.spec :as spec]
+            [clojure.string :as str]))
+
+(spec/def ::timestamp string?)
+(spec/def ::user string?)
+(spec/def ::url string?)
+(spec/def ::min-id string?)
+
+(spec/def ::keywords (spec/* map?))
+(spec/def ::description (spec/nilable string?))
+(spec/def ::content (spec/nilable string?))
+(spec/def ::media map?)
+
+(spec/def ::user-data (spec/keys :req-un [::user]
+                                 :opt-un [::min-id]))
+
+(spec/def ::bookmark (spec/keys :req-un [::url ::user ::timestamp]))
+(spec/def ::bookmarks (spec/* ::bookmark))
+
+(spec/def ::resource (spec/keys :req-un [::url ::description ::keywords ::content ::media]))
+(spec/def ::resources (spec/* ::resource))
+
+(spec/def ::payload (spec/or :resource  ::resource
+                             :bookmarks ::bookmarks
+                             :resources ::resources
+                             :user-data ::user-data))
+
+(spec/def ::type string?)
+(spec/def ::action (spec/keys :req-un [::payload ::type]))
