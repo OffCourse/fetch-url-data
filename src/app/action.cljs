@@ -29,11 +29,18 @@
         payload (extract-payload records)
         event-source (extract-event-source (first records))
         action {:payload payload
-               :type event-source}]
+                :type event-source}]
     action))
 
-(defn create [resources]
-  {:type "test-channel"
-   :payload resources})
+(defmulti create (fn [payload] (first (spec/conform ::specs/payload payload))))
+
+(defmethod create :bookmarks [payload]
+  {:type "expanded-bookmarks"
+   :payload payload})
+
+(defmethod create :resources [payload]
+  (println (first (spec/conform ::specs/payload payload)))
+  {:type "fetched-resources"
+   :payload payload})
 
 #_(spec/instrument #'convert)

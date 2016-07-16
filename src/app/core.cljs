@@ -20,19 +20,29 @@
     (cb error nil)))
 
 (defn ^:export handler [event context cb]
-  (println (.stringify js/JSON (clj->js event)))
+  (println "Event: " (.stringify js/JSON (clj->js event)) "\n")
   (let [incoming-action (action/convert event)]
+    (println "Incoming: " (.stringify js/JSON (clj->js incoming-action)) "\n")
     (if (spec/valid? ::specs/action incoming-action)
       (go
         (let [{:keys [payload type]} (spec/conform ::specs/action incoming-action)
-              urls                   (map :url (second payload))
+              raw-bookmarks          (second payload)
+              urls                   (map :url raw-bookmarks)
               resources              (<! (resource/fetch urls))
-              outgoing-action        (action/create resources)]
-          (if (spec/valid? ::specs/action outgoing-action)
-            (let [response               (<! (message/send outgoing-action :url))]
-              (println (.stringify js/JSON (clj->js outgoing-action)))
-              (cb nil (clj->js "success")))
-            (handle-error :invalid-outgoing-action (spec/explain-data ::specs/action outgoing-action) cb))))
+              bookmarks              (map (fn [[bookmark resource]]
+                                            (assoc bookmark :url (:url resource)))
+                                          (zipmap raw-bookmarks resources))
+              bookmarks-action       (action/create bookmarks)
+              resources-action       (action/create resources)]
+          (if (spec/valid? ::specs/action bookmarks-action)
+            (let [response (<! (message/send bookmarks-action :timestamp))]
+              (println "Outgoing: " (.stringify js/JSON (clj->js bookmarks-action)) "\n"))
+            (handle-error :invalid-outgoing-action (spec/explain-data ::specs/action bookmarks-action) cb))
+          (if (spec/valid? ::specs/action resources-action)
+            (let [response (<! (message/send resources-action :url))]
+              (println "Outgoing: " (.stringify js/JSON (clj->js resources-action)) "\n"))
+            (handle-error :invalid-outgoing-action (spec/explain-data ::specs/action resources-action) cb))
+          (cb nil (clj->js "success"))))
       (handle-error :invalid-incoming-action (spec/explain-data ::specs/action incoming-action) cb))))
 
 (defn -main [] identity)
